@@ -1,0 +1,29 @@
+<?php
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+use \Slim\Views\PhpRenderer as Slimview;
+
+require('../vendor/autoload.php');
+require('../src/config/mysqldb.php');
+
+$config['displayErrorDetails'] = true;
+$config['addContentLengthHeader'] = false;
+
+// $app = new \Slim\App;
+$app = new \Slim\App(['settings' => $config]);
+
+$container = $app->getContainer();
+$container['renderer'] = new Slimview('../src/templates');
+
+// $app->get('/hello/{name}', function(Request $req, Response $res, array $args){
+//   $name = $args['name'];
+//   // $res->getBody()->write("Hey $name");
+//   $res = $this->renderer->render($res, 'test.phtml', ['theName'=>$name]);
+//   return $res;
+
+// });
+
+// require('../src/routes/customers.php');
+
+$app->run();
+?>

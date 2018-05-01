@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SLIM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+  <?php require("assets/bootstrap.min.css"); ?>
+</style>
+<body>
+  <div class='container'>
+    <h1> Slim PHP App</h1>
+    <?php if($show_all_customers): ?>
+      <?php foreach($customers as $customer): ?>
+        <?php foreach($customer as $key => $value): ?>
+          <?php if($key=="firstName"): ?>
+            <h3> <?php echo $value ?></h3>  
+          <?php endif ?>
+
+        <?php endforeach ?>
+      <?php endforeach ?>
+    <?php endif ?>
+  </div>
+</body>
+</html>
