@@ -12,7 +12,7 @@
 </style>
 <body>
   <div class='container'>
-    <h1> Slim PHP App</h1>
+    <h1 class='mt16'> Slim PHP App</h1>
     
     <form method='get' action='showaddform'>
       <button class='btn btn-success' type='submit'>Add</button>
@@ -39,7 +39,7 @@
               <?php foreach($customer as $key => $value): ?>
                 <?php if ($key=='id'):?>           
                   <?php 
-                    $url = "customer/" . $value ;
+                    $url = "customers/" . $value ;
                   ?>
                 <?php endif ?>
 
@@ -85,7 +85,7 @@
     var data_from_server = JSON.parse(xhr.responseText);
      
     for (var i=0; i<data_from_server.length; i++){
-      htmlContent += `<div class='mt24'> <h4> <a href='customer/${data_from_server[i].id}'>${data_from_server[i].firstName} ${data_from_server[i].lastName}</a></h4> <p class='mb0'> <strong>Email:</strong> ${data_from_server[i].email}</p> <p class='mb0'> <strong>Phone:</strong> ${data_from_server[i].phone}</p> </div>`
+      htmlContent += `<div class='mt24'> <h4> <a href='customers/${data_from_server[i].id}'>${data_from_server[i].firstName} ${data_from_server[i].lastName}</a></h4> <p class='mb0'> <strong>Email:</strong> ${data_from_server[i].email}</p> <p class='mb0'> <strong>Phone:</strong> ${data_from_server[i].phone}</p> </div>`
     }
     
     document.getElementById('jsDiv').innerHTML +=htmlContent;

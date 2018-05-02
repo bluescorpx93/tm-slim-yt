@@ -17,7 +17,7 @@
         <h1 class='mt48 mb24'> Create New Customer</h1>
 
         <div class='row'>
-          <div class='col-md-4 col-sm-4 mt24'>
+          <div class='col-sm-12 mt24'>
             <div class='alert ' id='alertDiv' role="alert" style='display:none'>
               <button type="button" class="close" id='alertCloseBtn' data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -25,9 +25,10 @@
               <p id='alertContent'></p>
             </div>
           </div>
+          
         </div>
 
-        <form method='post' action='/public/customers/c'>
+        <form method='post' action='/public/customers/create'>
           <div class='form-group'>
             <label for='firstNameInput'>First Name</label>
             <input type='text' class='form-control' name='first_name' id='firstNameInput' placeholder='John'/>
@@ -45,8 +46,8 @@
             <input type='text' class='form-control' name='phone' id='phoneInput' placeholder='555-123-4567-77'/>
           </div>
           <div class='form-group'>
-            <button class='btn btn-primary' type='submit' name='addBtn' >Submit(PHP)</button>
-            <button class='btn btn-primary' id='addBtn' >Submit(JS)</button>
+            <button class='btn btn-primary' type='submit' name='addBtn' id='addBtnPhp'>Submit(PHP)</button>
+            <button class='btn btn-primary' id='addBtnJs' >Submit(JS)</button>
             <button class='btn btn-secondary' name='cancelBtn' id='formCancelBtn'> Cancel</button>    
           </div>
         </form>
@@ -62,7 +63,7 @@
     window.location.replace("http://localhost:8080/public/customers");
   });
 
-  document.getElementById('addBtn').addEventListener('click', function(e){
+  document.getElementById('addBtnJs').addEventListener('click', function(e){
     e.preventDefault();
   
     var custFirstNameVal = document.getElementById("firstNameInput").value;
