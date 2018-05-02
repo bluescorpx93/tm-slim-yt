@@ -8,20 +8,94 @@
 </head>
 <style>
   <?php require("assets/bootstrap.min.css"); ?>
+  <?php require("assets/styles.css"); ?>
 </style>
 <body>
   <div class='container'>
     <h1> Slim PHP App</h1>
-    <?php if($show_all_customers): ?>
-      <?php foreach($customers as $customer): ?>
-        <?php foreach($customer as $key => $value): ?>
-          <?php if($key=="firstName"): ?>
-            <h3> <?php echo $value ?></h3>  
-          <?php endif ?>
+    
+    <form method='get' action='showaddform'>
+      <button class='btn btn-success' type='submit'>Add</button>
+    </form>
+    
+    <div class='row'>
 
-        <?php endforeach ?>
-      <?php endforeach ?>
-    <?php endif ?>
+      <?php if($cust_created): ?> 
+        <div class='col-sm-6 col-sm-offset-3'>
+          <div class='alert alert-info'> 
+            <button type="button" class="close" id='alertCloseBtn' data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p> Customer Created Succesfully</p>
+          </div>
+        </div>
+      <?php endif ?>
+
+      <div class='col-xs-12 col-sm-6 col-md-6 mt16' >
+        <h2> Through PHP</h2>
+        <?php if($show_all_customers): ?>
+          <?php foreach($customers as $customer): ?>
+            <div class='mt16'>
+              <?php foreach($customer as $key => $value): ?>
+                <?php if ($key=='id'):?>           
+                  <?php 
+                    $url = "customer/" . $value ;
+                  ?>
+                <?php endif ?>
+
+                <?php if ($key=='fullName'): ?> 
+                  <h4> 
+                    <a href="<?php echo $url?>"> <?php echo $value ?> </a> 
+                  </h4> 
+                <?php endif ?>
+
+                <?php if ($key=='email'): ?>
+                  <p class='mb0'> 
+                    <span> Email: </span> <?php echo $value; ?> 
+                  </p>
+                <?php endif ?>
+              
+                <?php if ($key=='phone'): ?> 
+                  <p class='mb0'> 
+                    <span> Phone: </span> <?php echo $value; ?> 
+                  </p>
+                <?php endif ?>
+                                            
+              <?php endforeach ?>
+            </div>
+          <?php endforeach ?>
+        <?php endif ?>
+      </div>
+
+      <div class='col-xs-12 col-sm-6 col-md-6 mt16' id='jsDiv'>
+        <h2> Through JS</h2>
+      </div>
+    </div>
+
   </div>
 </body>
+
+<script type='text/javascript'>
+  var APIURL = '/public/api/customers';
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', APIURL, true);
+
+  xhr.onload = function(){
+    var htmlContent = '';
+    var data_from_server = JSON.parse(xhr.responseText);
+     
+    for (var i=0; i<data_from_server.length; i++){
+      htmlContent += `<div class='mt24'> <h4> <a href='customer/${data_from_server[i].id}'>${data_from_server[i].firstName} ${data_from_server[i].lastName}</a></h4> <p class='mb0'> <strong>Email:</strong> ${data_from_server[i].email}</p> <p class='mb0'> <strong>Phone:</strong> ${data_from_server[i].phone}</p> </div>`
+    }
+    
+    document.getElementById('jsDiv').innerHTML +=htmlContent;
+  }
+
+  xhr.onerror = function(){
+    console.log("Something went down");
+  }
+
+  xhr.send();
+
+</script>
 </html>

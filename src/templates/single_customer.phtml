@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SLIM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+  <?php require("assets/bootstrap.min.css"); ?>
+  <?php require("assets/styles.css"); ?>
+</style>
+<body>
+  <div class='container'>
+
+    <div class='row'>
+      <div class='col-md-4 col-sm-4 mt24'>
+        <div class='alert ' id='alertDiv' role="alert" style='display:none'>
+          <button type="button" class="close" id='alertCloseBtn' data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p id='alertContent'></p>
+        </div>
+      </div>
+    </div>
+
+    <div class='mt24'>
+      <?php foreach($customer as $item): ?>
+        <?php foreach($item as $key=> $value): ?>
+          <?php if($key=='id'): ?>
+            <span style='display:none' id='custIdSpan'><?php echo $value?></span>
+          <?php endif ?>
+
+          <?php if($key=='firstName'): ?>
+            <div class='mt48'>
+            <largespan36 id='custFirstNameSpan'><?php echo $value ?></largespan36>
+          <?php endif ?>
+          <?php if($key=='lastName'): ?>
+            <largespan36 id='custLastNameSpan'><?php echo $value ?></largespan36>
+            </div>
+          <?php endif ?>
+
+          <?php if($key=='email'): ?>
+            <largespan> Email: <span id='custEmailSpan'><?php echo $value ?></span> </largespan>
+          <?php endif ?>
+
+          <?php if($key=='phone'): ?>
+            <largespan> Phone: <span id='custPhoneSpan'><?php echo $value ?></span> </largespan>
+          <?php endif ?>
+
+        <?php endforeach ?>
+      <?php endforeach ?>
+    </div>
+
+    <div class='mt24' id='editMainBtndiv'>
+      <button class='btn btn-secondary' id='homeBtn'> Home</button>
+      <button class='btn btn-primary' id='editBtn'> Edit</button>
+    </div>
+
+    <div class='mt24' id='formDiv' style='display: none'>
+      <div class='row'>
+        <div class='col-md-4 col-sm-4'>
+          <form method='post' action='/public/customer/<?php echo $cus_id ?>' >
+            <input type='hidden' name='id' value='<?php echo $cus_id ?>'/>
+            <div class='form-group'>
+              <label for='firstNameInput'> First Name</label>
+              <input type='text' class='form-control' name='first_name' value='' id='firstNameInput'/>
+            </div>
+            <div class='form-group'>
+              <label for='lastNameInput'> Last Name</label>
+              <input type='text' class='form-control' name='last_name' value='' id='lastNameInput'/>
+            </div>
+            <div class='form-group'>
+              <label for='emailInput'> Email</label>
+              <input type='email' class='form-control' name='email' value='' id='emailInput' />
+            </div>
+            <div class='form-group'>
+              <label for='phoneInput'> Phone</label>
+              <input type='text' class='form-control' name='phone' value='' id='phoneInput'/>
+            </div>
+            <div class='form-group'>
+              <!-- <button class='btn btn-primary' name='editData' id='editWithPHPBtn'> Save(PHP)</button> -->
+              <button class='btn btn-primary' id='editWithJSBtn'> Save(JS)</button>
+              <button class='btn btn-default' id='cancelBtn'> Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+</body>
+<script type='text/javascript'>
+  
+  document.getElementById('homeBtn').addEventListener('click', function(){
+    window.location.replace("http://localhost:8080/public/customers");
+  });
+
+  document.getElementById('alertCloseBtn').addEventListener('click', function(){
+    document.getElementById('alertDiv').style.display = "none";
+    document.getElementById('alertDiv').classList.remove('alert-success');
+    document.getElementById('alertDiv').classList.remove('alert-danger');
+  });
+
+  document.getElementById('editBtn').addEventListener('click', function(){
+    document.getElementById('formDiv').style.display = "block";
+    document.getElementById('editMainBtndiv').style.display = "none";
+    renderDataInForm()
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    document.getElementById('formDiv').style.display = "none";
+    document.getElementById('editMainBtndiv').style.display = "block";
+  });
+
+
+  function renderDataInForm(){
+    document.getElementById('firstNameInput').value = document.getElementById("custFirstNameSpan").innerHTML;
+    document.getElementById('lastNameInput').value = document.getElementById("custLastNameSpan").innerHTML;
+    document.getElementById('emailInput').value = document.getElementById("custEmailSpan").innerHTML;
+    document.getElementById('phoneInput').value = document.getElementById("custPhoneSpan").innerHTML;
+  }
+
+
+  document.getElementById('editWithJSBtn').addEventListener('click', function(e){
+    e.preventDefault(); 
+    var custIDVal = document.getElementById('custIdSpan').innerHTML;
+    var custFirstNameVal = document.getElementById("firstNameInput").value;
+    var custLastNameVal = document.getElementById("lastNameInput").value;
+    var custEmailVal = document.getElementById("emailInput").value;
+    var custPhoneVal = document.getElementById("phoneInput").value;
+
+    if (!custFirstNameVal || !custLastNameVal || !custEmailVal || !custPhoneVal){
+      document.getElementById('alertDiv').style.display = "block";
+      document.getElementById('alertDiv').classList.add('alert-danger');
+      document.getElementById('alertContent').innerHTML = `Please fill values correctly`;
+      return;
+    }
+
+    var APIURL = `/public/api/customer/${custIDVal}`;  
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', APIURL, true);
+
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+    xhr.onload = function(){
+      var data_from_server = JSON.parse(xhr.responseText);
+
+      document.getElementById('formDiv').style.display = "none";
+      document.getElementById('editMainBtndiv').style.display = "block";
+
+      document.getElementById('custFirstNameSpan').innerText = data_from_server[0].firstName;
+      document.getElementById('custLastNameSpan').innerText = data_from_server[0].lastName;
+      document.getElementById('custEmailSpan').innerText = data_from_server[0].email;
+      document.getElementById('custPhoneSpan').innerText = data_from_server[0].phone;
+
+      document.getElementById('alertDiv').style.display = "block";
+      document.getElementById('alertDiv').classList.add('alert-success');
+      document.getElementById('alertContent').innerHTML = `Customer Edited Successfully`;
+
+    }
+
+    xhr.onerror = function(){
+      console.log("Something went down");
+    }
+    
+    var customerObject = {
+      first_name: custFirstNameVal, 
+      last_name: custLastNameVal, 
+      email: custEmailVal, 
+      phone: custPhoneVal
+    }
+
+    var data = JSON.stringify(customerObject);
+
+    xhr.send(data);
+
+  });
+
+
+</script>
+
+</html>

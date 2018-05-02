@@ -1,0 +1,39 @@
+.inline-heading{
+  display: inline;
+}
+
+largespan{
+  font-size:20px;
+}
+
+largespan36{
+  font-size: 36px;
+}
+
+.mt16{
+  margin-top: 16px;
+}
+
+.mt24{
+  margin-top: 24px;
+}
+
+.mb0{
+  margin-bottom:0;
+}
+
+.mb24{
+  margin-bottom:24px;
+}
+
+.mt48{
+  margin-top: 48px;
+}
+
+.btn, .form-control, .alert{
+  border-radius:0
+}
+
+.pad-zero{
+  padding: 0;
+}
