@@ -1,11 +1,11 @@
 <?php
 
 class mysqldb{
-  private $db_engine = "mysql";
-  private $db_host = 'localhost';
-  private $db_user = 'root';
-  private $db_pass = 'mariadb';
-  private $db_name = 'slim_php_app';
+  private $db_engine = <YOUR_DB_ENGINE>;
+  private $db_host = <YOUR_DB_HOST>;
+  private $db_user = <YOUR_DB_USERNAME>;
+  private $db_pass = <YOUR_DB_NAME>;
+  private $db_name = <YOUR_DB_NAME>;
 
   public function connectToTheDB(){
     $mysql_connection_str = "$this->db_engine:host=$this->db_host;dbname=$this->db_name";
